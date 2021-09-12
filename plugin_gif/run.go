@@ -35,7 +35,6 @@ func init() { // 插件主体
 		SetBlock(true).SetPriority(20).Handle(func(ctx *zero.Ctx) {
 		
 		if RunAllow = false {
-			ctx.SendChain(message.Text("gif功能已禁用"),)
 			return
 			}
 		NewPath(ctx.Event.UserID)
