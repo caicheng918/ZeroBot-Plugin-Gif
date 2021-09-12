@@ -28,9 +28,16 @@ var a1 = []string{"搓", "冲", "摸", "拍", "抬", "次", "丢", "吃", "敲",
 // var a2 = []string{"旋转", "变形"}
 
 func init() { // 插件主体
+	
+	RunAllow = true
 
 	zero.OnRegex(`^(` + strings.Join(a1, "|") + `)\D*?(\[CQ:(image.+?url=(.+)|at.+?(\d{5,11}))\].*|(\d+))$`).
 		SetBlock(true).SetPriority(20).Handle(func(ctx *zero.Ctx) {
+		
+		if RunAllow = false {
+			ctx.SendChain(message.Text("gif功能已禁用"),)
+			return
+			}
 		NewPath(ctx.Event.UserID)
 		List := ctx.State["regex_matched"].([]string)
 		YuanTu(List[4]+List[5]+List[6], strconv.FormatInt(ctx.Event.UserID, 10))
@@ -68,6 +75,24 @@ func init() { // 插件主体
 			message.Image(picurl),
 		)
 	})
+	
+		zero.OnFullMatch("开启gif", zero.SuperUserPermission).SetBlock(true).FirstPriority().
+		Handle(func(ctx *zero.Ctx) {
+			RunAllow = true
+			ctx.SendChain(
+				
+				message.Text("gif功能已启用"),
+			)
+		})
+
+	zero.OnFullMatch("关闭gif", zero.SuperUserPermission).SetBlock(true).FirstPriority().
+		Handle(func(ctx *zero.Ctx) {
+			RunAllow = false
+			ctx.SendChain(
+				
+				message.Text("gif功能已禁用"),
+			)
+		})
 }
 
 
